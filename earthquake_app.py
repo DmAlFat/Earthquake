@@ -1,16 +1,29 @@
-# This is a sample Python script.
+import requests
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?'
 
+start_time = input('Enter the start time (YYYY-MM-DD): ')
+end_time = input('Enter the end time (YYYY-MM-DD): ')
+latitude = input('Enter the latitude: ')
+longitude = input('Enter the longitude: ')
+max_radius_km = input('Enter the max radius in km: ')
+min_magnitude = input('Enter the min magnitude: ')
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+response = requests.get(url, headers={'Accept':'application/json'}, params={
+		'format':'geojson',
+		'starttime':start_time,
+		'endtime':end_time,
+		'latitude':latitude,
+		'longitude':longitude,
+		'maxradiuskm':max_radius_km,
+		'minmagnitude':min_magnitude
 
+	})
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+data = response.json()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+earthquake_list = data['features']
+count = 0
+for earthquake in earthquake_list:
+	count += 1
+	print(f"{count}. Place: {earthquake['properties']['place']}. Magnitude: {earthquake['properties']['mag']}.")
