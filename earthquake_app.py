@@ -5,7 +5,7 @@ import sqlite3
 def save_eartquakes(place_magnitude_list):
 	conn = sqlite3.connect("earthquakes_db.db")
 	cursor = conn.cursor()
-	cursor.execute("CREATE TABLE earthquakes (place TEXT, magnitude REAL)")
+	# cursor.execute("CREATE TABLE earthquakes (place TEXT, magnitude REAL)")
 	cursor.executemany("INSERT INTO earthquakes VALUES (?, ?)", place_magnitude_list)
 	conn.commit()
 	conn.close()
